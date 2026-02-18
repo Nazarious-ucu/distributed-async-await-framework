@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 1s
+
+scrape_configs:
+  - job_name: "resonate"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["resonate1:9090"]
+        labels:
+          server: "resonate1"
+      - targets: ["resonate2:9090"]
+        labels:
+          server: "resonate2"

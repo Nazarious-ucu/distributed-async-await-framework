@@ -1,0 +1,8 @@
+system:
+  url: http://resonate1:8001
+aio:
+  subsystems:
+    store-sqlite:
+      enable: true
+      config:
+        path: /data/resonate1.db

@@ -1,0 +1,40 @@
+services:
+  resonate1:
+    image: resonatehqio/resonate
+    command: ["serve", "--config", "/etc/resonate/resonate.yml"]
+    volumes:
+      - ./resonate1.yml:/etc/resonate/resonate.yml:ro
+      - ./data1:/data
+    ports:
+      - "8001:8001"   # HTTP API
+      - "8002:8002"   # poll endpoint
+      - "9090:9090"   # metrics
+
+  resonate2:
+    image: resonatehqio/resonate
+    command: ["serve", "--config", "/etc/resonate/resonate.yml"]
+    volumes:
+      - ./resonate2.yml:/etc/resonate/resonate.yml:ro
+      - ./data2:/data
+    ports:
+      - "8003:8001"
+      - "8004:8002"
+      - "9091:9090"
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9092:9090"
+    depends_on:
+      - resonate1
+      - resonate2
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
